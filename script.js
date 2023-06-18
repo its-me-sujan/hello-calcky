@@ -1,115 +1,27 @@
+let input = document.getElementById('inputBox');
+let buttons = document.querySelectorAll('button');
 
-const numbers = document.querySelectorAll('.numbers');
-const result = document.querySelectorAll('.result span');
-const signs = document.querySelectorAll('.sign');
-const equals = document.querySelectorAll('.equals');
-const clear = document.querySelectorAll('.clear');
-const negative = document.querySelectorAll('.negative');
-const percent = document.querySelectorAll('.percent');
-
-let firstValue = "";
-let isFirstValue = false;
-let secondValue = "";
-let isSecondValue = false;
-let sign = "";
-let resultValue = 0;
-
-for (let i = 0; i < numbers.length; i++) {
-    numbers[i].addEventListener('click', (e) => {
-        let atr = e.target.getAttribute('value');
-        if (isFirstValue === false) {
-            getFirstValue(atr)
+let string = "";
+let arr = Array.from(buttons);
+arr.forEach(button => {
+    button.addEventListener('click', (e) =>{
+        if(e.target.innerHTML == '='){
+            string = eval(string);
+            input.value = string;
         }
-        if (isSecondValue === false) {
-            getSecondValue(atr)
+
+        else if(e.target.innerHTML == 'AC'){
+            string = "";
+            input.value = string;
         }
+        else if(e.target.innerHTML == 'DEL'){
+            string = string.substring(0, string.length-1);
+            input.value = string;
+        }
+        else{
+            string += e.target.innerHTML;
+            input.value = string;
+        }
+        
     })
-}
-
-function getFirstValue(el) {
-    result.innerHTML = "";
-    firstValue += el;
-    result.innerHTML = firstValue;
-    firstValue = +firstValue;
-}
-
-function getSecondValue(el) {
-    if (firstValue != "" && sign != "") {
-        secondValue += el;
-        result.innerHTML = secondValue;
-        secondValue = +secondValue;
-    }
-}
-
-function getSign() {
-    for (let i = 0; i < signs.length; i++) {
-        signs[i].addEventListener('click', (e) => {
-            sign = e.target.getAttribute('value');
-            isFirstValue = true;
-        })
-    }
-}
-getSign();
-
-equals.addEventListener('click', () => {
-    result.innerHTML = "";
-    if (sign === "+") {
-        resultValue = firstValue + secondValue;
-    }
-    else if (sign === "-") {
-        resultValue = firstValue - secondValue;
-    }
-    else if (sign === "*") {
-        resultValue = firstValue * secondValue;
-    }
-    else if (sign === "/") {
-        resultValue = firstValue / secondValue;
-    }
-    result.innerHTML = resultValue;
-    firstValue = resultValue;
-    secondValue = "";
-
-    checkResultLength();
-})
-
-function checkResultLength() {
-    resultValue = JSON.stringify(resultValue);
-    if(resultValue.length >= 8) {
-        resultValue = JSON.parse(resultValue);
-        result.innerHTML  = resultValue.toFixed(5);
-    }
-}
-
-negative.addEventListener('click', () => {
-    result.innerHTML = "";
-    if(firstValue != "") {
-        resultValue = -firstValue;
-        firstValue = resultValue;
-    }
-    if(firstValue != "" && secondValue != "" && sign != "") {
-        resultValue = -resultValue;
-    }
-    result.innerHTML = resultValue;
-})
-
-percent.addEventListener('click', () => {
-    result.innerHTML = "";
-    if(firstValue != "") {
-        resultValue = firstValue / 100;
-        firstValue = resultValue;
-    }
-    if(firstValue != "" && secondValue != "" && sign != "") {
-        resultValue = resultValue / 100;
-    }
-    result.innerHTML = resultValue;
-})
-
-clear.addEventListener('click', () => {
-    result.innerHTML = 0;
-    firstValue = "";
-    isFirstValue = false;
-    secondValue = "";
-    isSecondValue = false;
-    sign = "";
-    resultValue = 0;
 })
