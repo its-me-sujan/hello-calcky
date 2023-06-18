@@ -1,0 +1,1 @@
+This is small project of cloning the iphone claculator to get hands on practice in frond-end.
